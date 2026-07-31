@@ -205,6 +205,7 @@ public sealed partial class MechSystem : SharedMechSystem
     [SubscribeLocalEvent]
     private void OnMechEntry(EntityUid uid, MechComponent component, MechEntryEvent args)
     {
+        Log.Debug("Enter mech event triggered.");
         if (args.Cancelled || args.Handled)
             return;
 
@@ -221,12 +222,14 @@ public sealed partial class MechSystem : SharedMechSystem
     [SubscribeLocalEvent]
     private void OnMechExit(EntityUid uid, MechComponent component, MechExitEvent args)
     {
+        Log.Debug("Exit mech event triggered.");
         if (args.Cancelled || args.Handled)
             return;
 
         if (!TryEject(uid, component))
             return;
 
+        _ui.CloseUi(uid, MechUiKey.Key);
         args.Handled = true;
     }
 
